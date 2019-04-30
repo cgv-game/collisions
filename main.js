@@ -67,10 +67,45 @@ scene.add(pyramid);
 //Sphere
 var sphereGeometry = new THREE.SphereGeometry(4,20,20);
 var sphereMaterial = new THREE.MeshLambertMaterial({color:red});
-var sphere = new Physijs.ShereMesh(sphereGeometry, sphereMaterial);
+var sphere = new Physijs.SphereMesh(sphereGeometry, sphereMaterial);
 sphere.position.x = 10;
 sphere.position.y = 4;
 scene.add(sphere);
+
+// Adding random plantes as obstacles
+				for ( var i = 0; i < 20; i ++ ) {
+				map = THREE.ImageUtils.loadTexture('../water.jpg');
+				geometry = new THREE.SphereGeometry(200, 150, 150);
+				material = new THREE.MeshPhongMaterial({shading: THREE.FlatShading,
+				color: 0x000000,
+				ambient: 0x1c3cd2,
+				emissive: 0xb61313,
+				specular: 0x111111,
+				shininess: 30,
+				map: map, side: THREE.DoubleSide});
+				mesh = new Physijs.SphereMesh(geometry, material);
+				map.wrapS = map.wrapT = THREE.RepeatWrapping;
+				map.repeat.set( 5, 5 );
+				mesh.scale.x = mesh.scale.y = mesh.scale.z = 0.1;
+				mesh.position.y = Math.random() * 1000 - 500;
+				mesh.position.x = Math.random() * 1000 - 500;
+				mesh.position.z = Math.random() * 1000 - 500;
+				scene.add(mesh);
+				}
+
+                geometry = new THREE.Geometry();
+				for ( i = 0; i < 50000; i ++ ) {
+					var vertex = new THREE.Vector3();
+					vertex.x = 1000 * Math.random() - 500;
+					vertex.y = 1000 * Math.random() - 500;
+					vertex.z = 1000 * Math.random() - 500;
+					geometry.vertices.push( vertex );
+				}
+				material = new THREE.ParticleBasicMaterial( { size: 1, sizeAttenuation: false, transparent: true } );
+				material.color.setHex( 0xff00ff );
+				particles = new THREE.ParticleSystem( geometry, material );
+				particles.sortParticles = true;
+				scene.add( particles );
 
 //Cylinder
 var cylinderGeometry = new THREE.CylinderGeometry(2,2,20);
